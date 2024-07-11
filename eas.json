@@ -1,0 +1,43 @@
+{
+  "cli": {
+    "version": ">= 10.1.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "API_KEY": "AIzaSyDVn55n1ZcIcphH6U8UoMdd0tZQ8X6J9eI",
+        "AUTH_DOMAIN": "practica-firebase-20190010.firebaseapp.com",
+        "PROJECT_ID": "practica-firebase-bc9f5",
+        "STORAGE_BUCKET": "practica-firebase-bc9f5.appspot.com",
+        "MESSAGING_SENDER_ID": "608381722178",
+        "APP_ID": "1:608381722178:web:124fb6b87868613c0257db"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "API_KEY": "AIzaSyDVn55n1ZcIcphH6U8UoMdd0tZQ8X6J9eI",
+        "AUTH_DOMAIN": "practica-firebase-20190010.firebaseapp.com",
+        "PROJECT_ID": "practica-firebase-20190010",
+        "STORAGE_BUCKET": "practica-firebase-20190010.appspot.com",
+        "MESSAGING_SENDER_ID": "608381722178",
+        "APP_ID": "1:608381722178:web:124fb6b87868613c0257db"
+      }
+    },
+    "production": {
+      "env": {
+        "API_KEY": "AIzaSyDVn55n1ZcIcphH6U8UoMdd0tZQ8X6J9eI",
+        "AUTH_DOMAIN": "practica-firebase-20190010.firebaseapp.com",
+        "PROJECT_ID": "practica-firebase-bc9f5",
+        "STORAGE_BUCKET": "practica-firebase-bc9f5.appspot.com",
+        "MESSAGING_SENDER_ID": "608381722178",
+        "APP_ID": "1:608381722178:web:124fb6b87868613c0257db"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

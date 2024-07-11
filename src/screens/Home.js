@@ -19,7 +19,7 @@ const Home = ({ navigation }) => {
     }, []);
 
     const goToAdd = () => {
-        navigation.navigate('Add');
+        navigation.navigate('AgregarProducto');
     };
 
     const goToSettings = () => {

@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import ButtonComponent from '../components/ButtonComponent';
 import InputComponent from '../components/InputComponent';
 
-const Add = ({ navigation }) => {
+const AgregarProducto = ({ navigation }) => {
     const [producto, setProducto] = useState({
         nombre: '',
         precio: 0,
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Add;
+export default AgregarProducto;

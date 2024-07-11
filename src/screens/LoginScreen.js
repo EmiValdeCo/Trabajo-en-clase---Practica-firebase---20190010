@@ -6,33 +6,11 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import ButtonComponent from '../components/ButtonComponent';
 import InputComponent from '../components/InputComponent';
-import { CLIENTE_ID } from '@env';
 
-
-WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: CLIENTE_ID,
-    });
-
-    useEffect(() => {
-        if (response?.type === 'success') {
-            const { id_token } = response.params;
-
-            const credential = GoogleAuthProvider.credential(id_token);
-            signInWithCredential(auth, credential)
-                .then(() => {
-                    navigation.replace('Home');
-                })
-                .catch((error) => {
-                    Alert.alert('Error', error.message);
-                });
-        }
-    }, [response]);
 
     const handleLogin = async () => {
         try {
@@ -43,11 +21,6 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('Error', error.message);
         }
     };
-
-    const handleGoogleLogin = () => {
-        promptAsync();
-    };
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Iniciar Sesión</Text>
@@ -68,10 +41,6 @@ const LoginScreen = ({ navigation }) => {
             <ButtonComponent
                 title="Iniciar Sesión"
                 onPress={handleLogin}
-            />
-            <ButtonComponent
-                title="Iniciar Sesión con Google"
-                onPress={handleGoogleLogin}
             />
             <Text style={styles.link} onPress={() => navigation.navigate('Register')}>
                 ¿No tienes cuenta? Crear cuenta

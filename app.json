@@ -24,6 +24,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "firebase-app-Emiliano"
+    "scheme": "firebase-app-Emiliano",
+    "extra": {
+      "eas": {
+        "projectId": "613ccca5-fc39-4f15-a767-a378e181ddf9"
+      }
+    }
   }
 }
