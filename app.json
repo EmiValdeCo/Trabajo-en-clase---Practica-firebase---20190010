@@ -18,10 +18,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.firebaseappEmiliano"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "firebase-app-Emiliano"
   }
 }

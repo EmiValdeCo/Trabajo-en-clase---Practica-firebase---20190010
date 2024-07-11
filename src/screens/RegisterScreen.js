@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Alert, StyleSheet } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import TextInputComponent from '../components/TextInputComponent';
+import PhoneInputComponent from '../components/PhoneInputComponent';
+import DatePickerComponent from '../components/DatePickerComponent';
+import ButtonComponent from '../components/ButtonComponent';
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -13,6 +17,11 @@ const RegisterScreen = ({ navigation }) => {
 
     const handleRegister = async () => {
         try {
+            if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)) {
+                Alert.alert('Error', 'El correo electrónico no es válido.');
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -22,7 +31,9 @@ const RegisterScreen = ({ navigation }) => {
                 phone,
                 birthDate,
             });
-
+            
+            Alert.alert('Cuenta creada correctamente', 'Ahora puedes iniciar sesión');
+            
             navigation.replace('Login');
         } catch (error) {
             Alert.alert('Error', error.message);
@@ -30,53 +41,53 @@ const RegisterScreen = ({ navigation }) => {
         }
     };
 
+    const handleNavegation = () => {
+        navigation.navigate('Login');
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Crear Cuenta</Text>
-            <TextInput
-                style={styles.input}
+            <TextInputComponent
                 placeholder="Correo electrónico"
                 value={email}
                 onChangeText={setEmail}
+                keyboardType="email-address"
             />
-            <TextInput
-                style={styles.input}
+            <TextInputComponent
                 placeholder="Contraseña"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            <TextInput
-                style={styles.input}
+            <TextInputComponent
                 placeholder="Nombre completo"
                 value={fullName}
                 onChangeText={setFullName}
             />
-            <TextInput
-                style={styles.input}
+            <PhoneInputComponent
                 placeholder="Número de teléfono"
                 value={phone}
-                onChangeText={text => setPhone(text.replace(/[^0-9-]/g, '').replace(/(\d{4})(\d)/, '$1-$2'))}
-                keyboardType="phone-pad"
-                maxLength={9}
+                onChangeText={setPhone}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Fecha de nacimiento (DD/MM/AAAA)"
+            <DatePickerComponent
                 value={birthDate}
                 onChangeText={setBirthDate}
             />
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Registrar</Text>
-            </TouchableOpacity>
+            <ButtonComponent
+                title="Registrar"
+                onPress={handleRegister}
+            />
             <Text style={styles.link} onPress={() => navigation.navigate('Login')}>
-                ¿Ya tienes cuenta? Iniciar sesión
+                ¿Ya tienes cuenta?
             </Text>
+            <ButtonComponent
+                title="Inicial Sesión"
+                onPress={handleNavegation}
+            />
         </View>
     );
 };
-
-export default RegisterScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -90,25 +101,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
     },
-    input: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 4,
-        paddingLeft: 8,
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#0288d1',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 10,
-    },
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
     link: {
         color: '#0288d1',
         textAlign: 'center',
@@ -116,3 +108,5 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     },
 });
+
+export default RegisterScreen;

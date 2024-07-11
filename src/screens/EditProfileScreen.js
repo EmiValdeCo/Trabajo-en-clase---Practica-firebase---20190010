@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Alert, StyleSheet } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { getDoc, doc, setDoc } from 'firebase/firestore';
 import { database } from '../config/firebase';
+import InputComponent from '../components/InputComponent';
+import ButtonComponent from '../components/ButtonComponent';
 
 const EditProfileScreen = () => {
     const [userData, setUserData] = useState({});
@@ -26,7 +28,7 @@ const EditProfileScreen = () => {
     const handleSave = async () => {
         try {
             await setDoc(doc(database, 'users', auth.currentUser.uid), userData, { merge: true });
-            Alert.alert('Success', 'Profile updated successfully');
+            Alert.alert('Se ha actualizado', 'Perfil actualizado correctamente');
         } catch (error) {
             Alert.alert('Error', error.message);
         }
@@ -35,29 +37,30 @@ const EditProfileScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Editar Perfil</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Nombre completo"
+            <InputComponent
+                label="Nombre completo"
                 value={userData.fullName || ''}
                 onChangeText={text => setUserData({ ...userData, fullName: text })}
+                placeholder="Nombre completo"
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Número de teléfono"
+            <InputComponent
+                label="Número de teléfono"
                 value={userData.phone || ''}
                 onChangeText={text => setUserData({ ...userData, phone: text.replace(/[^0-9-]/g, '').replace(/(\d{4})(\d)/, '$1-$2') })}
+                placeholder="Número de teléfono"
                 keyboardType="phone-pad"
                 maxLength={9}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Fecha de nacimiento (DD/MM/AAAA)"
+            <InputComponent
+                label="Fecha de nacimiento (DD/MM/AAAA)"
                 value={userData.birthDate || ''}
                 onChangeText={text => setUserData({ ...userData, birthDate: text })}
+                placeholder="Fecha de nacimiento (DD/MM/AAAA)"
             />
-            <TouchableOpacity style={styles.button} onPress={handleSave}>
-                <Text style={styles.buttonText}>Guardar</Text>
-            </TouchableOpacity>
+            <ButtonComponent
+                title="Guardar"
+                onPress={handleSave}
+            />
         </View>
     );
 };
@@ -75,24 +78,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 4,
-        paddingLeft: 8,
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#0288d1',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 10,
-    },
-    buttonText: {
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
     },
 });
