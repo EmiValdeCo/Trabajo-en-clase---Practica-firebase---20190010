@@ -5,9 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 
-// Componente Add para agregar un nuevo producto
 const Add = ({ navigation }) => {
-    // Estado inicial del producto
     const [producto, setProducto] = useState({
         nombre: '',
         precio: 0,
@@ -16,14 +14,12 @@ const Add = ({ navigation }) => {
         imagen: ''
     });
 
-    const [loading, setLoading] = useState(false); // Estado de carga
+    const [loading, setLoading] = useState(false);
 
-    // Función para navegar a la pantalla de inicio
     const goToHome = () => {
         navigation.navigate('Home');
     };
 
-    // Función para abrir la galería de imágenes del dispositivo
     const openGalery = async () => {
         try {
             let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,32 +34,26 @@ const Add = ({ navigation }) => {
                     ...producto,
                     imagen: result.assets[0].uri
                 });
-                console.log('Imagen seleccionada:', result.assets[0].uri);
             }
         } catch (error) {
-            console.log('Error al abrir la galería', error);
+            console.error('Error al abrir la galería', error);
         }
     };
 
-    // Función para agregar el producto a Firestore
     const agregarProducto = async () => {
-        setLoading(true); // Iniciar la carga
+        setLoading(true);
         try {
             let imageUrl = null;
 
             if (producto.imagen) {
-                console.log('Subiendo imagen a Firebase Storage...');
                 const imageRef = ref(storage, `images/${Date.now()}-${producto.nombre}`);
                 const response = await fetch(producto.imagen);
                 const blob = await response.blob();
                 const snapshot = await uploadBytes(imageRef, blob);
                 imageUrl = await getDownloadURL(snapshot.ref);
-                console.log("URL de la imagen:", imageUrl);
             }
 
             await addDoc(collection(database, 'productos'), { ...producto, imagen: imageUrl });
-            console.log('Se guardó la colección');
-
             Alert.alert('Producto agregado', 'El producto se agregó correctamente', [
                 { text: 'Ok', onPress: goToHome },
             ]);
@@ -73,7 +63,7 @@ const Add = ({ navigation }) => {
             console.error('Error al agregar el producto', error);
             Alert.alert('Error', 'Ocurrió un error al agregar el producto. Por favor, intenta nuevamente.');
         } finally {
-            setLoading(false); // Finalizar la carga
+            setLoading(false);
         }
     };
 
@@ -120,9 +110,6 @@ const Add = ({ navigation }) => {
     );
 };
 
-export default Add;
-
-// Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -193,3 +180,5 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
 });
+
+export default Add;
